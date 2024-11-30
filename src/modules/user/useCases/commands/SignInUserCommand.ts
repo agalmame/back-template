@@ -6,4 +6,14 @@ export const signInUserSchema = z.object({
   password: z.string()
 });
 
-export type SignInUserCommand = SignInUserDTO
+
+
+export class SignInUserCommand {
+  readonly email: string;
+  readonly password: string;
+  
+  constructor(data: SignInUserDTO) {
+    this.email = data.email;
+    this.password = data.password;
+  }
+}
