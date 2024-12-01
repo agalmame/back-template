@@ -13,10 +13,18 @@ import { RegisterUserHandler } from '@/modules/user/useCases/commands/handlers/R
 import { SignInUserHandler } from '@/modules/user/useCases/commands/handlers/SignInUserHandler';
 import { AuthMiddleware } from '../infrastructure/middleware/AuthMiddleware';
 import { CommandBus } from '../infrastructure/cqrs/CommandBus';
+import { PinoLoggerFactory } from '../infrastructure/logging/PinoLoggerFactory';
+import { PinoLogger } from '../infrastructure/logging/PinoLogger';
 
 export function registerDependencies(): void {
+  const loggerFactory = new PinoLoggerFactory();
+  const destination = process.env.LOG_DESTINATION as 'console' | 'betterstack' | 'cloudwatch' || 'console';
+  const logger = new PinoLogger(loggerFactory, destination);
+
+  // Register the pre-configured instance
   console.log('registerDependencies..............')
   container.registerSingleton<IDatabase>('Database', PrismaDatabase);
+  container.registerInstance(PinoLogger, logger);
   container.register('AuthMiddleware', AuthMiddleware);
   container.registerSingleton('CommandBus', CommandBus);
   container.register<IUserRepository>('UserRepository', UserRepository);
