@@ -3,6 +3,7 @@ import express from 'express';
 import { registerDependencies } from '@shared/container';
 import authRoutes from '@modules/user/routes/v1/AuthRoute'
 import { createUserRoutes } from '@modules/user/routes/v1/UserRoute'; 
+import cors  from 'cors'
 import { errorHandler, notFoundHandler } from '@/shared/infrastructure/middleware/ErrorHandler';
 
 export class App {
@@ -16,7 +17,7 @@ export class App {
   private configure(): void {
     // Register dependencies first
     registerDependencies();
-
+    this.app.use(cors())
     // Middleware
     this.app.use(express.json());
 

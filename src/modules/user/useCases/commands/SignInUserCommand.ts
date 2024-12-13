@@ -2,7 +2,10 @@ import { z } from 'zod';
 import { SignInUserDTO } from '../../domain/dtos/Auth.dto';
 
 export const signInUserSchema = z.object({
-  email: z.string().email(),
+  email: z.string({
+    required_error: "email is required",
+    invalid_type_error: "email must be a string",
+  }).email(),
   password: z.string()
 });
 

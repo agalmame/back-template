@@ -5,14 +5,22 @@ import { AuthController } from '../../controllers/AuthController';
 const router = Router();
 
 // Resolve controller lazily when route is hit
-router.post('/register', (req, res) => {
+router.post('/register', (req, res, next) => {
     const authController = container.resolve(AuthController);
-    return authController.register(req, res);
+    try {
+        return authController.register(req, res);
+      } catch (err) {
+        next(err);
+      }
 });
-router.post('/signin', (req, res) => {
+
+router.post('/signin', (req, res, next) => {
     const authController = container.resolve(AuthController);
-    return authController.signIn(req, res);
+    try {
+        return authController.signIn(req, res);
+    } catch  (err) {
+        next(err);
+    }
 });
     
-
 export default router;

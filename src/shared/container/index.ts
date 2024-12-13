@@ -15,6 +15,7 @@ import { AuthMiddleware } from '../infrastructure/middleware/AuthMiddleware';
 import { CommandBus } from '../infrastructure/cqrs/CommandBus';
 import { PinoLoggerFactory } from '../infrastructure/logging/PinoLoggerFactory';
 import { PinoLogger } from '../infrastructure/logging/PinoLogger';
+import { PrismaQueryBuilder } from '../infrastructure/query/QueryBuilder';
 
 export function registerDependencies(): void {
   const loggerFactory = new PinoLoggerFactory();
@@ -25,6 +26,7 @@ export function registerDependencies(): void {
   console.log('registerDependencies..............')
   container.registerSingleton<IDatabase>('Database', PrismaDatabase);
   container.registerInstance(PinoLogger, logger);
+  container.register(PrismaQueryBuilder, PrismaQueryBuilder)
   container.register('AuthMiddleware', AuthMiddleware);
   container.registerSingleton('CommandBus', CommandBus);
   container.register<IUserRepository>('UserRepository', UserRepository);
